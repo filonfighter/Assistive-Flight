@@ -1,6 +1,7 @@
 from machine import Pin, SPI, PWM # type: ignore
 import framebuf # type: ignore
 import time
+import math
 
 BL = 13
 DC = 7
@@ -129,6 +130,8 @@ class LCD_1inch14(framebuf.FrameBuffer):
 
         self.write_cmd(0x29)
 
+    black = 0x0000
+
     def show(self):
         self.write_cmd(0x2A)
         self.write_data(0x00)
@@ -149,7 +152,25 @@ class LCD_1inch14(framebuf.FrameBuffer):
         self.cs(0)
         self.spi.write(self.buffer)
         self.cs(1)
-  
+
+    def draw_thick_line(self, x0, y0, length, angle, color, thickness):
+        """Draw a thick line at a given angle."""
+        for i in range(thickness):
+            x1 = x0 + length * math.cos(angle) + i
+            y1 = y0 + length * math.sin(angle) + i
+            self.line(round(x0), round(y0), round(x1), round(y1), color)
+
+    def draw_thick_arrow(self, x, y, length, angle, color, thickness):
+        """Draw a thick arrow."""
+        for i in range(thickness):
+            x0 = x - length * math.cos(angle) / 2 + i
+            y0 = y - length * math.sin(angle) / 2 + i
+            x1 = x + length * math.cos(angle) / 2 + i
+            y1 = y + length * math.sin(angle) / 2 + i
+            self.draw_thick_line(x0, y0, length, angle, color, thickness)  # shaft
+            self.draw_thick_line(x1, y1, length / 3, angle - 5 * math.pi / 6, color, thickness)  # arrowhead
+            self.draw_thick_line(x1, y1, length / 3, angle + 5 * math.pi / 6, color, thickness)  # arrowhead
+            
 if __name__=='__main__':
     pwm = PWM(Pin(BL))
     pwm.freq(1000)
@@ -157,20 +178,11 @@ if __name__=='__main__':
 
     LCD = LCD_1inch14()
 
+    angle = 0
+   
     while(1):
-        LCD.fill(LCD.red)
+        LCD.fill(LCD.black)
+        LCD.draw_thick_arrow(LCD.width / 2, LCD.height / 2, 100, angle, LCD.blue, 5)
         LCD.show()
-        time.sleep(1)
-
-        LCD.fill(LCD.green)
-        LCD.show()
-        time.sleep(1)
-
-        LCD.fill(LCD.blue)
-        LCD.show()
-        time.sleep(1)
-
-        LCD.fill(LCD.white)
-        LCD.show()
-        time.sleep(1)
-
+        time.sleep(0.1)
+        angle = (angle + math.pi / 30) % (2 * math.pi)  # rotate by 6 degrees and keep angle within 0 to 2π
