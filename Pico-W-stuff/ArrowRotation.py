@@ -170,25 +170,35 @@ class LCD_1inch14(framebuf.FrameBuffer):
         """Draw text at the given coordinates."""
         self.text(text, x, y, color)
     
+# if __name__=='__main__':
+#     pwm = PWM(Pin(BL))
+#     pwm.freq(1000)
+#     pwm.duty_u16(32768)#max 65535
+    
+#     LCD = LCD_1inch14()
+    
+#     arrow_bitmaps = [LCD.load_bitmap(f'arrow_{i * 15}.bmp') for i in range(24)]
+    
+#     direction = 0
+#     while(1):
+#         LCD.fill(LCD.black)
+#         LCD.draw_bitmap(0, 0, arrow_bitmaps[direction], 100, 100, LCD.blue)
+#         LCD.draw_text(0, 0, 'Direction: {}'.format(direction), LCD.white)
+#         LCD.show()
+#         time.sleep(1)
+#         direction = (direction + 1) % 4  # Cycle through the four directions
+
 if __name__=='__main__':
     pwm = PWM(Pin(BL))
     pwm.freq(1000)
     pwm.duty_u16(32768)#max 65535
-    
+
     LCD = LCD_1inch14()
-    
-    arrow_bitmaps = [
-        LCD.load_bitmap('arrow_up.bmp'),
-        LCD.load_bitmap('arrow_right.bmp'),
-        LCD.load_bitmap('arrow_down.bmp'),
-        LCD.load_bitmap('arrow_left.bmp'),
-    ]
-    
-    direction = 0
+
+    arrow_bitmap = LCD.load_bitmap('arrow_1.bmp')
+
     while(1):
         LCD.fill(LCD.black)
-        LCD.draw_bitmap(0, 0, arrow_bitmaps[direction], 100, 100, LCD.blue)
-        LCD.draw_text(0, 0, 'Direction: {}'.format(direction), LCD.white)
+        LCD.draw_bitmap(0, 0, arrow_bitmap, 100, 100, LCD.blue)
         LCD.show()
         time.sleep(1)
-        direction = (direction + 1) % 4  # Cycle through the four directions
