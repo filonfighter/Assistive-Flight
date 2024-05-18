@@ -3,6 +3,7 @@ import framebuf # type: ignore
 import time
 import math
 
+
 BL = 13
 DC = 7
 RST = 12
@@ -152,53 +153,37 @@ class LCD_1inch14(framebuf.FrameBuffer):
         self.cs(0)
         self.spi.write(self.buffer)
         self.cs(1)
+    
+    def draw_thick_line(self, x0, y0, length, angle, color, thickness):
+        """Draw a thick line at a given angle."""
+        for i in range(thickness):
+            x1 = x0 + length * math.cos(angle) + i
+            y1 = y0 + length * math.sin(angle) + i
+            self.line(round(x0), round(y0), round(x1), round(y1), color)
 
-    def load_bitmap(self, filename):
-        """Load a bitmap into memory."""
-        with open(filename, 'rb') as f:
-            f.read(54)  # Skip the BMP header
-            return bytearray(f.read())  # Read the pixel data
-    
-    def draw_bitmap(self, x, y, bitmap, width, height, color):
-        """Draw a bitmap at the given coordinates."""
-        for i in range(height):
-            for j in range(width):
-                if bitmap[i * width + j]:
-                    self.pixel(x + j, y + i, color)
-    
-    def draw_text(self, x, y, text, color):
-        """Draw text at the given coordinates."""
-        self.text(text, x, y, color)
-    
-# if __name__=='__main__':
-#     pwm = PWM(Pin(BL))
-#     pwm.freq(1000)
-#     pwm.duty_u16(32768)#max 65535
-    
-#     LCD = LCD_1inch14()
-    
-#     arrow_bitmaps = [LCD.load_bitmap(f'arrow_{i * 15}.bmp') for i in range(24)]
-    
-#     direction = 0
-#     while(1):
-#         LCD.fill(LCD.black)
-#         LCD.draw_bitmap(0, 0, arrow_bitmaps[direction], 100, 100, LCD.blue)
-#         LCD.draw_text(0, 0, 'Direction: {}'.format(direction), LCD.white)
-#         LCD.show()
-#         time.sleep(1)
-#         direction = (direction + 1) % 4  # Cycle through the four directions
+    def draw_thick_arrow(self, x, y, length, angle, color, thickness):
+        """Draw a thick arrow."""
+        for i in range(thickness):
+            x0 = x - length * math.cos(angle) / 2 + i
+            y0 = y - length * math.sin(angle) / 2 + i
+            x1 = x + length * math.cos(angle) / 2 + i
+            y1 = y + length * math.sin(angle) / 2 + i
+            self.draw_thick_line(x0, y0, length, angle, color, thickness)  # shaft
+            self.draw_thick_line(x1, y1, length / 3, angle - 5 * math.pi / 6, color, thickness)  # arrowhead
+            self.draw_thick_line(x1, y1, length / 3, angle + 5 * math.pi / 6, color, thickness)  # arrowhead
 
+    
+    
 if __name__=='__main__':
-    pwm = PWM(Pin(BL))
-    pwm.freq(1000)
-    pwm.duty_u16(32768)#max 65535
-
     LCD = LCD_1inch14()
-
-    arrow_bitmap = LCD.load_bitmap('arrow_1.bmp')
+    angle = 0  # initialize angle
 
     while(1):
         LCD.fill(LCD.black)
-        LCD.draw_bitmap(0, 0, arrow_bitmap, 100, 100, LCD.blue)
+        text = "Gate 1"
+        text_width = len(text) * 8  # assuming each character is 8 pixels wide
+        LCD.text(text, round((LCD.width - text_width) / 2), 10, LCD.blue)  # place text in the middle top of the screen
+        LCD.draw_thick_arrow(round(LCD.width / 2), round(LCD.height / 2), 75, angle, LCD.blue, 3)
         LCD.show()
-        time.sleep(1)
+        time.sleep(0.1)
+        angle += math.pi / 30  # rotate by 6 degrees
