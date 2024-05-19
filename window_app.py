@@ -19,12 +19,6 @@ font_file = "Paperboard.ttf"
 font_name = "Paperboard"
 pyglet.font.add_file(font_file)
 
-"""# get the current time
-now = datetime.now()
-current_time = now.strftime("%H:%M")
-print("Current Time =", current_time)
-"""
-
 # creating gradient label
 def create_gradient_label(canvas, text, font, x, y, width, height, start_color, end_color):
     
@@ -47,32 +41,12 @@ def create_gradient_label(canvas, text, font, x, y, width, height, start_color, 
     # Add text to the canvas
     canvas.create_text(x + width // 2, y + height // 2, text=text, fill="white", font=font)
 
-
-
 canvas = tk.Canvas(root, width=700, height=700)
 canvas.pack()
 
 create_gradient_label(canvas, text=" ", font=(font_name, 17, "bold"), x=0, y=0, width=700, height=700, start_color="blue", end_color="#a300cc")
 
-"""label2 = Label(root, height=70, width=3, bg="blue")
-label2.place(x=0, y=2)
-label3 = Label(root, height=70, width=6, bg="#a300cc")
-label3.place(x=670, y=2)"""
 
-"""
-Label5 = Label(root,text="Money Saved: ", bd=4, width=15, font=(font_name,16, "bold"))
-Label5.place(x=100, y=100)
-Label6 = Label(root,text="14.197.12💸", bd=4, width=15, font=(font_name,16, "bold"))
-Label6.place(x=100, y=150)
-"""
-
-
-"""
-Label8 = Label(root,text="Time Saved: ", bd=4, width=10, font=(font_name,16, "bold"))
-Label8.place(x=450, y=100)
-Label6 = Label(root,text="2861h⌛", bd=4, width=10, font=(font_name,16, "bold"))
-Label6.place(x=450, y=150)
-"""
 # entry - text input
 Entry = tk.Entry(root, bd="4", width=10, font="Hervelica 12 bold")
 Entry.place(x=140, y=290)
@@ -226,7 +200,6 @@ CheckVar3= IntVar()
 CheckVar4 = IntVar()
 CheckVar5= IntVar()
 CheckVar6 = IntVar()
-
 CheckVar7 = IntVar()
 CheckVar8 = IntVar()
 CheckVar9 = IntVar()
@@ -238,28 +211,30 @@ CheckVar14 = IntVar()
 
 
 # creating checkboxes
-c1 = Checkbutton(root, text="A1", variable=CheckVar, onvalue=1, offvalue=0, height=3, width=3, bg="white", fg="green", font="Helvetica 12 bold")
+c1 = Checkbutton(root, text="A1", variable=CheckVar, onvalue=1, offvalue=0, height=3, width=3, bg="white", fg="green", font="Helvetica 11 bold")
 c1.place(x=70, y=360)
-
 c2 = Checkbutton(root, text="Gr.1", variable=CheckVar2, onvalue=1, offvalue=0, height=3, width=3, bg="white", fg="green", font="Helvetica 10 bold")
 c2.place(x=70, y=420)
 c3 = Checkbutton(root, text="Gr.2", variable=CheckVar3, onvalue=1, offvalue=0, height=3, width=3, bg="white", fg="green", font="Helvetica 10 bold")
 c3.place(x=70, y=470)
+
 c4 = Checkbutton(root, text="Gr.3", variable=CheckVar4, onvalue=1, offvalue=0, height=3, width=3, bg="white", fg="green", font="Helvetica 10 bold")
 c4.place(x=70, y=520)
 
-c5 = Checkbutton(root, text="B1", variable=CheckVar5, onvalue=1, offvalue=0, height=3, width=3, bg="white", fg="purple", font="Helvetica 12 bold")
+c5 = Checkbutton(root, text="B1", variable=CheckVar5, onvalue=1, offvalue=0, height=3, width=3, bg="white", fg="purple", font="Helvetica 11 bold")
 c5.place(x=170, y=360)
 
 c6 = Checkbutton(root, text="Gr.1", variable=CheckVar6, onvalue=1, offvalue=0, height=3, width=3, bg="white", fg="purple",  font="Helvetica 10 bold")
 c6.place(x=170, y=420)
+
 c7 = Checkbutton(root, text="Gr.2", variable=CheckVar7, onvalue=1, offvalue=0, height=3, width=3, bg="white", fg="purple",  font="Helvetica 10 bold")
 c7.place(x=170, y=470)
+
 c8 = Checkbutton(root, text="Gr.3", variable=CheckVar8, onvalue=1, offvalue=0, height=3, width=3, bg="white", fg="purple",  font="Helvetica 10 bold")
 c8.place(x=170, y=520)
 
 
-c9 = Checkbutton(root, text="C1", variable=CheckVar9, onvalue=1, offvalue=0, height=3, width=3, bg="white", fg="red", font="Helvetica 12 bold")
+c9 = Checkbutton(root, text="C1", variable=CheckVar9, onvalue=1, offvalue=0, height=3, width=3, bg="white", fg="red", font="Helvetica 11 bold")
 c9.place(x=270, y=360)
 
 c10 = Checkbutton(root, text="Gr.1", variable=CheckVar10, onvalue=1, offvalue=0, height=3, width=3, bg="white", fg="red",  font="Helvetica 10 bold")
