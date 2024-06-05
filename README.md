@@ -5,3 +5,5 @@ Pozdrawiam serdecznie z zespołem Æ
 
 
 Projekt stworzony podczas hachkathonu AviaTech Chalange
+
+Hackathon project for AviaTech Chalange 2024. 
